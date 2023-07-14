@@ -1,10 +1,12 @@
-name: Build & Publish to PyPI
+name: Publish to PyPI & Winget
 
 on:
-  workflow_run:
-    workflows: [Publish Executables]
-    types: [completed]
+  workflow_call:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to publish from'
+        required: true
 
 permissions:
   contents: read
@@ -18,18 +20,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout tag
+        uses: actions/checkout@v3
+        with:
+          # This ref would be empty (default behaviour) during a workflow_call
+          ref: ${{ github.event.inputs.tag }}
 
       - name: Setup the Python Environment
         uses: Qwerty-133/python-setup@v1
         with:
-          python-version: 3.11
+          python-version: '3.11'
           skip-pre-commit: true
           use-cache: false
 
-      - name: Publish
+      - name: Publish to PyPI
         run: >
           poetry publish --build --no-interaction
           --username __token__ --password '${{ secrets.PYPI_TOKEN }}'
