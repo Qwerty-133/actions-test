@@ -1,8 +1,11 @@
 name: Build Executables
+# Builds one-file and one-folder pyinstaller executables for all platforms.
+# When triggered by a release (workflow call), uploads the assets to the release.
+# When triggered manually: if a tag is specified, uploads the assets to release with the specified
+# tag. Otherwise, simply builds the executables and discards them.
 
 on:
-  release:
-    types: [published]
+  workflow_call:
   workflow_dispatch:
     inputs:
       tag:
@@ -89,7 +92,7 @@ jobs:
       - name: Setup the Python Environment
         uses: Qwerty-133/python-setup@v1
         with:
-          python-version: 3.11
+          python-version: '3.11'
           skip-pre-commit: true
           use-cache: false
 
@@ -99,7 +102,7 @@ jobs:
           if [[ '${{ matrix.mode }}' == 'onefile' ]]; then
             extra_options+=(--onefile)
           else
-            extra_options+=(--onedir)
+            extra_options+=(--onedir --add-data LICENSE:. --add-data LICENSE-THIRD-PARTY:.)
           fi
 
           poetry run pyinstaller spcache/__main__.py \
