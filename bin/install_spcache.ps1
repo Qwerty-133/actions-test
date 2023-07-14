@@ -48,10 +48,10 @@ if (-not (Test-Path -LiteralPath $APP_DIR)) {
 }
 
 if ($Version -eq "latest") {
-    $release_url = "https://api.github.com/repos/Qwerty-133/spcache/releases/latest"
+    $release_url = "https://api.github.com/repos/Qwerty-133/actions-test/releases/latest"
 }
 else {
-    $release_url = "https://api.github.com/repos/Qwerty-133/spcache/releases/tags/v$Version"
+    $release_url = "https://api.github.com/repos/Qwerty-133/actions-test/releases/tags/v$Version"
 }
 
 Write-Verbose "Fetching release data from $release_url"
