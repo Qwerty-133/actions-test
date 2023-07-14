@@ -178,9 +178,9 @@ if [[ ! -d "${APP_DIR}" ]]; then
   print_verbose "Created directory ${APP_DIR}\n"
 fi
 if [[ "${version}" == 'latest' ]]; then
-  readonly release_url='https://api.github.com/repos/Qwerty-133/spcache/releases/latest'
+  readonly release_url='https://api.github.com/repos/Qwerty-133/actions-test/releases/latest'
 else
-  readonly release_url="https://api.github.com/repos/Qwerty-133/spcache/releases/tags/v${version}"
+  readonly release_url="https://api.github.com/repos/Qwerty-133/actions-test/releases/tags/v${version}"
 fi
 
 print_verbose "Fetching release data from ${release_url}\n"
@@ -189,7 +189,7 @@ version_tag="${release_data#*\"tag_name\": \"}"
 version_tag="${version_tag%%\"*}"
 print_verbose "Version tag: ${version_tag}\n"
 
-asset_url="https://github.com/Qwerty-133/spcache/releases/download/${version_tag}/spcache_${PLATFORM}.zip"
+asset_url="https://github.com/Qwerty-133/actions-test/releases/download/${version_tag}/spcache_${PLATFORM}.zip"
 print_verbose "Asset url: ${asset_url}\n"
 print "${CYAN}" "Downloading spcache ${version_tag} for ${PLATFORM}...\n"
 curl --fail --silent --location "${asset_url}" --output "${ZIP}" --header "${header}"
