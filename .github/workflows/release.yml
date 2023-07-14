@@ -1,0 +1,28 @@
+name: Build, Test & Publish Executables
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    uses: ./.github/workflows/build_executables.yml
+
+  test-local:
+    uses: ./.github/workflows/test_local_scripts.yml
+    needs: build
+
+  test-online:
+    uses: ./.github/workflows/test_online_scripts.yml
+    needs: build
+
+  publish:
+    uses: ./.github/workflows/publish.yml
+    needs: test-local
